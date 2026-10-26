@@ -1,0 +1,97 @@
+.perfil {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin-top: 1rem;
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-primario-hover);
+  background: var(--color-primario-suave);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.datos {
+  flex: 1;
+  min-width: 0;
+}
+
+.datos h2 {
+  margin-bottom: 0.1rem;
+}
+
+.usuario {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-texto-suave);
+  font-weight: 700;
+}
+
+.etiqueta {
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: var(--color-primario-suave);
+  color: var(--color-primario-hover);
+}
+
+.descripcion {
+  margin: 0.75rem 0 0;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0 0;
+}
+
+dt {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-texto-suave);
+}
+
+dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.subtitulo {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+}
+
+.vacio {
+  margin-top: 1rem;
+  text-align: center;
+  color: var(--color-texto-suave);
+}
+
+@media (max-width: 560px) {
+  .perfil {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .usuario {
+    justify-content: center;
+  }
+}

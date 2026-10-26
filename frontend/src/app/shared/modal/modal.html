@@ -1,0 +1,29 @@
+@if (modal.actual(); as datos) {
+  <div class="fondo" (click)="modal.cerrar()">
+    <div
+      class="modal card"
+      [class]="datos.tipo"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-titulo"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="icono" aria-hidden="true">{{ iconos[datos.tipo] }}</div>
+      <h2 id="modal-titulo">{{ datos.titulo || titulosPorDefecto[datos.tipo] }}</h2>
+
+      @if (datos.mensajes.length === 1) {
+        <p>{{ datos.mensajes[0] }}</p>
+      } @else {
+        <ul>
+          @for (mensaje of datos.mensajes; track mensaje) {
+            <li>{{ mensaje }}</li>
+          }
+        </ul>
+      }
+
+      <button #boton type="button" class="btn btn-primario btn-bloque" (click)="modal.cerrar()">
+        {{ datos.textoBoton ?? 'Entendido' }}
+      </button>
+    </div>
+  </div>
+}

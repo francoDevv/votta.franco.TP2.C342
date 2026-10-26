@@ -1,0 +1,54 @@
+<section>
+  <h1>Mi perfil</h1>
+
+  @if (usuario(); as u) {
+    <div class="card perfil">
+      <div class="avatar">
+        @if (u.imagenPerfil) {
+          <img [src]="u.imagenPerfil" [alt]="'Foto de ' + u.nombre" />
+        } @else {
+          <span>{{ iniciales() }}</span>
+        }
+      </div>
+
+      <div class="datos">
+        <h2>{{ u.nombre }} {{ u.apellido }}</h2>
+        <p class="usuario">
+          &#64;{{ u.username }}
+          @if (u.perfil === 'administrador') {
+            <span class="etiqueta">Administrador</span>
+          }
+        </p>
+        @if (u.descripcion) {
+          <p class="descripcion">{{ u.descripcion }}</p>
+        }
+
+        <dl>
+          <div>
+            <dt>Correo</dt>
+            <dd>{{ u.email }}</dd>
+          </div>
+          <div>
+            <dt>Fecha de nacimiento</dt>
+            <!-- 'UTC' evita que se muestre un día antes por la zona horaria -->
+            <dd>{{ u.fechaNacimiento | date: 'dd/MM/yyyy' : 'UTC' }}</dd>
+          </div>
+          <div>
+            <dt>En Platito desde</dt>
+            <dd>{{ u.createdAt | date: 'dd/MM/yyyy' }}</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <h2 class="subtitulo">Mis últimas reseñas</h2>
+    <div class="card vacio">
+      <p>Todavía no publicaste ningún plato.</p>
+    </div>
+  } @else {
+    <div class="card vacio">
+      <p>No hay una sesión iniciada.</p>
+      <a routerLink="/login" class="btn btn-primario">Ingresar</a>
+    </div>
+  }
+</section>

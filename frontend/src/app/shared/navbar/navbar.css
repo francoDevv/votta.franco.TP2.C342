@@ -1,0 +1,75 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-superficie);
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.navbar-contenido {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--color-texto);
+}
+
+.marca:hover {
+  text-decoration: none;
+}
+
+.links {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.links a {
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--radio-chico);
+  color: var(--color-texto-suave);
+}
+
+.links a:hover {
+  background: var(--color-fondo);
+  text-decoration: none;
+}
+
+.links a.activo {
+  background: var(--color-primario-suave);
+  color: var(--color-primario-hover);
+}
+
+.links .salir {
+  color: var(--color-error);
+}
+
+@media (max-width: 480px) {
+  .marca span {
+    display: none;
+  }
+}
+
+.links .salir {
+  padding: 0.45rem 0.8rem;
+  border: none;
+  border-radius: var(--radio-chico);
+  background: none;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.links .salir:hover {
+  background: var(--color-fondo);
+}

@@ -1,0 +1,62 @@
+.fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(43, 33, 24, 0.45);
+  animation: aparecer 0.15s ease-out;
+}
+
+.modal {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  animation: subir 0.2s ease-out;
+}
+
+.icono {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 0.75rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  background: var(--color-primario);
+}
+
+.exito .icono {
+  background: var(--color-exito);
+}
+
+.error .icono {
+  background: var(--color-error);
+}
+
+ul {
+  text-align: left;
+  padding-left: 1.2rem;
+}
+
+p,
+ul {
+  margin: 0.5rem 0 1.25rem;
+  color: var(--color-texto-suave);
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes subir {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+}
