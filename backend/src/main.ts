@@ -8,9 +8,12 @@ async function bootstrap() {
   // Todas las rutas quedan bajo /api (ej: /api/auth/login)
   app.setGlobalPrefix('api');
 
-  // Solo el front puede llamar a la API
+  // Solo el front puede llamar a la API.
+  // FRONTEND_URL acepta varias URLs separadas por coma (ej: local + Vercel).
   app.enableCors({
-    origin: process.env.FRONTEND_URL ?? 'http://localhost:4200',
+    origin: (process.env.FRONTEND_URL ?? 'http://localhost:4200')
+      .split(',')
+      .map((url) => url.trim().replace(/\/$/, '')),
   });
 
   // Valida cada body contra su DTO; si algo no cumple, responde 400 automáticamente
