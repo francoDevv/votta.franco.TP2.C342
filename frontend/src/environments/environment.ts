@@ -1,4 +1,4 @@
-// Producción: se completa con la URL del backend deployado
+// Producción: backend deployado en Render
 export const environment = {
-  apiUrl: 'https://CAMBIAR-POR-URL-DEL-BACKEND/api',
+  apiUrl: 'https://platito-api.onrender.com/api',
 };
