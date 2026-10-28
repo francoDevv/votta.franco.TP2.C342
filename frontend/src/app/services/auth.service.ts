@@ -12,10 +12,8 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly url = `${environment.apiUrl}/auth`;
 
-  /** Usuario logueado (null si no hay sesión). Al ser un signal, la vista se actualiza sola. */
   readonly usuario = signal<Usuario | null>(this.leerUsuarioGuardado());
 
-  /** Recibe un FormData porque viaja la foto de perfil junto con los datos. */
   registrar(datos: FormData): Observable<RespuestaAuth> {
     return this.http
       .post<RespuestaAuth>(`${this.url}/registro`, datos)
@@ -38,7 +36,6 @@ export class AuthService {
     return localStorage.getItem(CLAVE_TOKEN);
   }
 
-  // El token se guarda en el navegador (lo pide el sprint 3 y ya queda listo)
   private guardarSesion({ usuario, token }: RespuestaAuth): void {
     localStorage.setItem(CLAVE_TOKEN, token);
     localStorage.setItem(CLAVE_USUARIO, JSON.stringify(usuario));

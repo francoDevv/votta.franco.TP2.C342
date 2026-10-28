@@ -1,8 +1,3 @@
-/*
- * Estilos globales de Platito.
- * Los colores y medidas viven en variables (:root) para que todas las
- * pantallas usen exactamente los mismos y el diseño quede uniforme.
- */
 :root {
   --color-primario: #e4572e;
   --color-primario-hover: #c94620;
@@ -49,8 +44,6 @@ a {
 a:hover {
   text-decoration: underline;
 }
-
-/* ---------- Componentes reutilizables ---------- */
 
 .card {
   background: var(--color-superficie);

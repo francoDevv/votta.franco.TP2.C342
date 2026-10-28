@@ -9,16 +9,11 @@ export interface DatosModal {
   textoBoton?: string;
 }
 
-/**
- * Reemplazo de alert(): cualquier componente llama a mostrar() y
- * el componente <app-modal> (que vive en app.html) se dibuja solo.
- */
 @Injectable({ providedIn: 'root' })
 export class ModalService {
   readonly actual = signal<DatosModal | null>(null);
   private alCerrar: (() => void) | null = null;
 
-  /** Devuelve una promesa que se resuelve cuando el usuario cierra el modal. */
   mostrar(datos: DatosModal): Promise<void> {
     this.actual.set(datos);
     return new Promise((resolve) => (this.alCerrar = resolve));

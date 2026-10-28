@@ -19,7 +19,6 @@ export class Login {
 
   protected readonly form = inject(FormBuilder).nonNullable.group({
     identificador: ['', [Validators.required]],
-    // El TP pide validar las reglas de la contraseña también en el login
     password: ['', [Validators.required, passwordSegura]],
   });
 

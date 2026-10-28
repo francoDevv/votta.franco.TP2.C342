@@ -15,7 +15,6 @@ export class Modal {
   protected readonly titulosPorDefecto = { exito: 'Listo', error: 'Revisá esto', info: 'Aviso' };
 
   constructor() {
-    // Al abrirse, el foco va al botón: se puede cerrar con Enter o Escape
     effect(() => this.boton()?.nativeElement.focus());
   }
 }

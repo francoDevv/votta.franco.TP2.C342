@@ -29,8 +29,11 @@
             <dd>{{ u.email }}</dd>
           </div>
           <div>
+            <dt>Perfil</dt>
+            <dd>{{ u.perfil === 'administrador' ? 'Administrador' : 'Usuario' }}</dd>
+          </div>
+          <div>
             <dt>Fecha de nacimiento</dt>
-            <!-- 'UTC' evita que se muestre un día antes por la zona horaria -->
             <dd>{{ u.fechaNacimiento | date: 'dd/MM/yyyy' : 'UTC' }}</dd>
           </div>
           <div>

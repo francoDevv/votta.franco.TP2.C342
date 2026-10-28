@@ -2,8 +2,6 @@ import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common
 import { ConfigService } from '@nestjs/config';
 import { v2 as cloudinary } from 'cloudinary';
 
-// Sube imágenes a Cloudinary y devuelve la URL pública.
-// No se guardan en el disco del servidor porque Render lo borra en cada deploy.
 @Injectable()
 export class CloudinaryService {
   private readonly logger = new Logger(CloudinaryService.name);
@@ -16,7 +14,6 @@ export class CloudinaryService {
     });
   }
 
-  /** Sube el archivo que llegó en la request y devuelve su URL. */
   subirImagen(archivo: Express.Multer.File, carpeta: string): Promise<string> {
     return new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(

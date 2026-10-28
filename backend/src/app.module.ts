@@ -7,10 +7,8 @@ import { PublicacionesModule } from './publicaciones/publicaciones.module.js';
 
 @Module({
   imports: [
-    // Lee el archivo .env y lo deja disponible en toda la app
     ConfigModule.forRoot({ isGlobal: true }),
 
-    // Conexión a MongoDB usando MONGO_URI del .env
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({

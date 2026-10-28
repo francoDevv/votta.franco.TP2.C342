@@ -1,4 +1,3 @@
-// Forma de los datos que devuelve el backend
 
 export type Perfil = 'usuario' | 'administrador';
 
@@ -16,7 +15,6 @@ export interface Usuario {
   createdAt: string;
 }
 
-/** Respuesta de /auth/login y /auth/registro */
 export interface RespuestaAuth {
   usuario: Usuario;
   token: string;

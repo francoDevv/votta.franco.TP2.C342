@@ -31,7 +31,6 @@ export class Registro {
   private readonly modal = inject(ModalService);
   private readonly router = inject(Router);
 
-  // Formulario reactivo: cada campo con sus validaciones
   protected readonly form = inject(FormBuilder).nonNullable.group(
     {
       nombre: ['', [Validators.required, Validators.maxLength(50)]],
@@ -46,7 +45,6 @@ export class Registro {
     { validators: coinciden('password', 'repetirPassword') },
   );
 
-  // La foto va aparte: los input file no se llevan bien con los formularios reactivos
   protected readonly imagen = signal<File | null>(null);
   protected readonly vistaPrevia = signal<string | null>(null);
   protected readonly errorImagen = signal<string | null>(null);
@@ -81,11 +79,9 @@ export class Registro {
   };
 
   constructor() {
-    // Libera la URL de la vista previa al salir de la pantalla
     inject(DestroyRef).onDestroy(() => this.liberarVistaPrevia());
   }
 
-  /** Mensaje de error de un campo, solo si el usuario ya lo tocó. */
   protected error(campo: Campo): string | null {
     const control = this.form.controls[campo];
     if (!control.touched) return null;
@@ -97,7 +93,6 @@ export class Registro {
     const claves = Object.keys(errores);
     if (claves.length === 0) return null;
 
-    // Para la contraseña se listan todas las reglas que faltan
     if (campo === 'password' && !errores['required']) {
       return 'Le falta: ' + claves.map((c) => this.mensajes.password[c]).join(', ');
     }
@@ -133,11 +128,10 @@ export class Registro {
 
   protected enviar(): void {
     if (this.form.invalid) {
-      this.form.markAllAsTouched(); // muestra todos los errores juntos
+      this.form.markAllAsTouched();
       return;
     }
 
-    // multipart/form-data: datos + archivo en una sola request
     const datos = new FormData();
     for (const [campo, valor] of Object.entries(this.form.getRawValue())) {
       if (valor.trim()) datos.append(campo, valor.trim());

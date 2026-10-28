@@ -64,7 +64,6 @@
   gap: 0.3rem;
 }
 
-/* El input file real queda oculto; se usa el label con estilo de botón */
 .foto-acciones input[type='file'] {
   position: absolute;
   width: 1px;
@@ -72,7 +71,6 @@
   opacity: 0;
 }
 
-/* Si se llega con Tab al input oculto, se marca el botón */
 .foto-acciones label:has(+ input:focus-visible) {
   outline: 2px solid var(--color-primario);
 }

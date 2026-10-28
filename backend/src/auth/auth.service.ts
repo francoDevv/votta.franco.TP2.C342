@@ -18,7 +18,6 @@ const RONDAS_BCRYPT = 10;
 
 @Injectable()
 export class AuthService {
-  // Nest crea e inyecta estos servicios solo (inyección de dependencias)
   constructor(
     private readonly usuariosService: UsuariosService,
     private readonly cloudinaryService: CloudinaryService,
@@ -26,13 +25,11 @@ export class AuthService {
   ) {}
 
   async registrar(dto: RegistroDto, imagen?: Express.Multer.File) {
-    // 1. Reglas que el DTO no puede chequear solo
     if (dto.password !== dto.repetirPassword) {
       throw new BadRequestException('Las contraseñas no coinciden');
     }
     const fechaNacimiento = this.validarFechaNacimiento(dto.fechaNacimiento);
 
-    // 2. Email y username únicos -> 409 Conflict si ya existen
     const enUso = await this.usuariosService.camposEnUso(dto.email, dto.username);
     if (enUso.length > 0) {
       const mensajes = {
@@ -42,13 +39,11 @@ export class AuthService {
       throw new ConflictException(enUso.map((campo) => mensajes[campo]));
     }
 
-    // 3. Contraseña encriptada (hash) y foto subida a Cloudinary
     const password = await bcrypt.hash(dto.password, RONDAS_BCRYPT);
     const imagenPerfil = imagen
       ? await this.cloudinaryService.subirImagen(imagen, 'perfiles')
       : null;
 
-    // 4. Guardar. "perfil" no viene del body: todo registro público es "usuario".
     let usuario: UsuarioDocument;
     try {
       usuario = await this.usuariosService.crear({
@@ -62,29 +57,23 @@ export class AuthService {
         imagenPerfil,
       });
     } catch (error) {
-      // Dos registros iguales al mismo tiempo: el índice unique de Mongo frena al segundo
       if ((error as { code?: number }).code === 11000) {
         throw new ConflictException('El correo o el nombre de usuario ya están en uso');
       }
       throw error;
     }
 
-    // Queda logueado directamente después de registrarse
     return this.respuestaConToken(usuario);
   }
 
   async login(dto: LoginDto) {
     const usuario = await this.usuariosService.buscarParaLogin(dto.identificador);
 
-    // Mismo mensaje si no existe o si la contraseña está mal:
-    // así no se puede averiguar qué usuarios están registrados.
-    // bcrypt.compare hashea la contraseña recibida y la compara con la guardada.
     const credencialesOk = usuario && (await bcrypt.compare(dto.password, usuario.password));
     if (!usuario || !credencialesOk) {
       throw new UnauthorizedException('Usuario o contraseña incorrectos');
     }
 
-    // Baja lógica (sprint 4): la cuenta existe pero no puede entrar
     if (!usuario.activo) {
       throw new ForbiddenException('Tu cuenta está deshabilitada. Contactá a un administrador.');
     }
@@ -92,15 +81,14 @@ export class AuthService {
     return this.respuestaConToken(usuario);
   }
 
-  /** Arma la respuesta de login/registro: datos del usuario + token JWT. */
   private async respuestaConToken(usuario: UsuarioDocument) {
     const payload = {
-      sub: usuario.id, // "sub" (subject) es el campo estándar para el id
+      sub: usuario.id, 
       username: usuario.username,
       perfil: usuario.perfil,
     };
     return {
-      usuario: usuario.toJSON(), // toJSON del schema saca la contraseña
+      usuario: usuario.toJSON(), 
       token: await this.jwtService.signAsync(payload),
     };
   }
