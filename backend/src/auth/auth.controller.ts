@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthService } from './auth.service.js';
+import { Publico } from './decorators/publico.decorator.js';
 import { LoginDto } from './dto/login.dto.js';
 import { RegistroDto } from './dto/registro.dto.js';
 
@@ -22,6 +23,7 @@ const MAX_IMAGEN_MB = 2;
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Publico()
   @Post('registro')
   @UseInterceptors(FileInterceptor('imagenPerfil'))
   registrar(
@@ -46,6 +48,7 @@ export class AuthController {
     return this.authService.registrar(dto, imagen);
   }
 
+  @Publico()
   @Post('login')
   @HttpCode(HttpStatus.OK)
   login(@Body() dto: LoginDto) {

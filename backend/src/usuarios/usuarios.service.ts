@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Usuario, UsuarioDocument } from './schemas/usuario.schema.js';
@@ -9,6 +9,14 @@ export class UsuariosService {
 
   crear(datos: Partial<Usuario>): Promise<UsuarioDocument> {
     return this.usuarioModel.create(datos);
+  }
+
+  async buscarPorId(id: string): Promise<UsuarioDocument> {
+    const usuario = await this.usuarioModel.findById(id).exec();
+    if (!usuario) {
+      throw new NotFoundException('El usuario no existe');
+    }
+    return usuario;
   }
 
   buscarParaLogin(identificador: string): Promise<UsuarioDocument | null> {
