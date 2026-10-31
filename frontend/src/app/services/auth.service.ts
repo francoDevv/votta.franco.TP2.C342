@@ -12,7 +12,14 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly url = `${environment.apiUrl}/auth`;
 
+  private readonly tokenActual = signal<string | null>(this.leerGuardado(CLAVE_TOKEN));
+  readonly tokenSesion = this.tokenActual.asReadonly();
   readonly usuario = signal<Usuario | null>(this.leerUsuarioGuardado());
+  readonly sesionVerificada = signal(false);
+
+  get token(): string | null {
+    return this.tokenActual();
+  }
 
   registrar(datos: FormData): Observable<RespuestaAuth> {
     return this.http
@@ -26,26 +33,68 @@ export class AuthService {
       .pipe(tap((respuesta) => this.guardarSesion(respuesta)));
   }
 
+  autorizar(): Observable<Usuario> {
+    return this.http.post<Usuario>(`${this.url}/autorizar`, {}).pipe(
+      tap((usuario) => {
+        this.actualizarUsuario(usuario);
+        this.sesionVerificada.set(true);
+      }),
+    );
+  }
+
+  refrescar(): Observable<{ token: string }> {
+    return this.http
+      .post<{ token: string }>(`${this.url}/refrescar`, {})
+      .pipe(tap(({ token }) => this.guardarToken(token)));
+  }
+
   logout(): void {
     localStorage.removeItem(CLAVE_TOKEN);
     localStorage.removeItem(CLAVE_USUARIO);
+    this.tokenActual.set(null);
     this.usuario.set(null);
+    this.sesionVerificada.set(false);
   }
 
-  get token(): string | null {
-    return localStorage.getItem(CLAVE_TOKEN);
-  }
-
-  private guardarSesion({ usuario, token }: RespuestaAuth): void {
-    localStorage.setItem(CLAVE_TOKEN, token);
+  actualizarUsuario(usuario: Usuario): void {
     localStorage.setItem(CLAVE_USUARIO, JSON.stringify(usuario));
     this.usuario.set(usuario);
   }
 
+  vencimiento(token: string | null = this.token): number | null {
+    if (!token) return null;
+    try {
+      const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      const { exp } = JSON.parse(atob(base64)) as { exp?: number };
+      return exp ? exp * 1000 : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private guardarSesion({ usuario, token }: RespuestaAuth): void {
+    this.guardarToken(token);
+    this.actualizarUsuario(usuario);
+    this.sesionVerificada.set(true);
+  }
+
+  private guardarToken(token: string): void {
+    localStorage.setItem(CLAVE_TOKEN, token);
+    this.tokenActual.set(token);
+  }
+
   private leerUsuarioGuardado(): Usuario | null {
     try {
-      const guardado = localStorage.getItem(CLAVE_USUARIO);
+      const guardado = this.leerGuardado(CLAVE_USUARIO);
       return guardado ? (JSON.parse(guardado) as Usuario) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private leerGuardado(clave: string): string | null {
+    try {
+      return globalThis.localStorage?.getItem(clave) ?? null;
     } catch {
       return null;
     }

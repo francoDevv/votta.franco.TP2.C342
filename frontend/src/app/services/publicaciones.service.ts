@@ -46,8 +46,22 @@ export class PublicacionesService {
     return this.http.delete<EstadoMeGusta>(`${this.url}/${id}/me-gusta`);
   }
 
+  obtener(id: string): Observable<Publicacion> {
+    return this.http.get<Publicacion>(`${this.url}/${id}`);
+  }
+
   listarComentarios(id: string, offset = 0, limit = 5): Observable<Pagina<Comentario>> {
     const params = new HttpParams().set('offset', offset).set('limit', limit);
     return this.http.get<Pagina<Comentario>>(`${this.url}/${id}/comentarios`, { params });
+  }
+
+  comentar(id: string, mensaje: string): Observable<Comentario> {
+    return this.http.post<Comentario>(`${this.url}/${id}/comentarios`, { mensaje });
+  }
+
+  editarComentario(id: string, comentarioId: string, mensaje: string): Observable<Comentario> {
+    return this.http.put<Comentario>(`${this.url}/${id}/comentarios/${comentarioId}`, {
+      mensaje,
+    });
   }
 }

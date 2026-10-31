@@ -1,5 +1,10 @@
 <section>
-  <h1>Mi perfil</h1>
+  <header class="encabezado">
+    <h1>Mi perfil</h1>
+    @if (usuario()) {
+      <a routerLink="/mi-perfil/editar" class="btn btn-secundario">Editar perfil</a>
+    }
+  </header>
 
   @if (usuario(); as u) {
     <div class="card perfil">

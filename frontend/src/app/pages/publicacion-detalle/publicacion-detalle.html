@@ -1,0 +1,78 @@
+<section class="detalle">
+  <a routerLink="/publicaciones" class="volver">‹ Volver a publicaciones</a>
+
+  @if (cargando()) {
+    <div class="card estado">
+      <div class="spinner" aria-hidden="true"></div>
+      <p>Cargando publicación...</p>
+    </div>
+  } @else if (error(); as mensaje) {
+    <div class="card estado">
+      <p class="emoji" aria-hidden="true">🍽️</p>
+      <p>{{ mensaje }}</p>
+      <a routerLink="/publicaciones" class="btn btn-primario">Ver otras publicaciones</a>
+    </div>
+  } @else if (publicacion(); as p) {
+    <app-publicacion-card
+      [publicacion]="p"
+      [destacada]="true"
+      (eliminada)="alEliminar()"
+      (meGustaCambiado)="alCambiarMeGusta($event)"
+    />
+
+    <section class="card comentarios" aria-labelledby="titulo-comentarios">
+      <h2 id="titulo-comentarios">
+        Comentarios <span class="texto-suave">({{ totalComentarios() }})</span>
+      </h2>
+
+      <form class="nuevo" (ngSubmit)="comentar()" novalidate>
+        <label for="nuevo-comentario" class="oculto">Escribí un comentario</label>
+        <textarea
+          id="nuevo-comentario"
+          name="comentario"
+          rows="3"
+          placeholder="¿Lo probaste? ¿Qué te pareció?"
+          [ngModel]="nuevoComentario()"
+          (ngModelChange)="nuevoComentario.set($event)"
+        ></textarea>
+        <div class="pie">
+          @if (intentoEnviar() && errorComentario(); as mensaje) {
+            <span class="error">{{ mensaje }}</span>
+          } @else {
+            <small class="texto-suave">{{ nuevoComentario().length }}/{{ maximo }}</small>
+          }
+          <button type="submit" class="btn btn-primario" [disabled]="enviando()">
+            {{ enviando() ? 'Comentando...' : 'Comentar' }}
+          </button>
+        </div>
+      </form>
+
+      @if (comentarios().length === 0) {
+        <p class="texto-suave vacio">Todavía no hay comentarios. ¡Sé el primero!</p>
+      } @else {
+        <div class="lista">
+          @for (comentario of comentarios(); track comentario._id) {
+            <app-comentario-item
+              [comentario]="comentario"
+              [editable]="true"
+              (editado)="alEditar($event)"
+            />
+          }
+        </div>
+
+        @if (hayMas()) {
+          <button
+            type="button"
+            class="btn btn-secundario btn-bloque cargar-mas"
+            [disabled]="cargandoMas()"
+            (click)="cargarMas()"
+          >
+            {{ cargandoMas() ? 'Cargando...' : 'Cargar más comentarios' }}
+          </button>
+        } @else if (totalComentarios() > 0) {
+          <p class="texto-suave fin">No hay más comentarios.</p>
+        }
+      }
+    </section>
+  }
+</section>

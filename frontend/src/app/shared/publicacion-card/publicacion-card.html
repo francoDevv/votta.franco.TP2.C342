@@ -28,7 +28,13 @@
       }
     </header>
 
-    <h3>{{ p.titulo }}</h3>
+    @if (destacada()) {
+      <h1 class="titulo">{{ p.titulo }}</h1>
+    } @else {
+      <h3 class="titulo">
+        <a [routerLink]="['/publicaciones', p._id]">{{ p.titulo }}</a>
+      </h3>
+    }
     <p class="lugar">
       <span>{{ p.plato }}</span> en <span>{{ p.restaurante }}</span>
     </p>
@@ -49,10 +55,18 @@
         <span aria-hidden="true">{{ meGusta() ? '♥' : '♡' }}</span>
         {{ likesCount() }}
       </button>
-      <span class="comentarios">
-        <span aria-hidden="true">💬</span>
-        {{ p.comentariosCount }} {{ p.comentariosCount === 1 ? 'comentario' : 'comentarios' }}
-      </span>
+      @if (destacada()) {
+        <span class="comentarios">
+          <span aria-hidden="true">💬</span>
+          {{ p.comentariosCount }} {{ p.comentariosCount === 1 ? 'comentario' : 'comentarios' }}
+        </span>
+      } @else {
+        <a class="comentarios" [routerLink]="['/publicaciones', p._id]">
+          <span aria-hidden="true">💬</span>
+          {{ p.comentariosCount }} {{ p.comentariosCount === 1 ? 'comentario' : 'comentarios' }}
+        </a>
+        <a class="ver" [routerLink]="['/publicaciones', p._id]">Ver publicación ›</a>
+      }
     </footer>
   </div>
 </article>

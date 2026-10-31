@@ -1,0 +1,50 @@
+@let c = comentario();
+<app-avatar [usuario]="c.autor" [tamano]="32" />
+
+<div class="cuerpo">
+  <p class="cabecera">
+    <strong>{{ c.autor.nombre }} {{ c.autor.apellido }}</strong>
+    <small>
+      {{ c.createdAt | tiempoRelativo }}
+      @if (c.modificado) {
+        · <em>editado</em>
+      }
+    </small>
+    @if (editable() && esMio() && !editando()) {
+      <button type="button" class="link" (click)="empezarEdicion()">Editar</button>
+    }
+  </p>
+
+  @if (editando()) {
+    <div class="edicion">
+      <label class="oculto" [for]="'editar-' + c._id">Editar comentario</label>
+      <textarea
+        [id]="'editar-' + c._id"
+        rows="3"
+        [ngModel]="texto()"
+        (ngModelChange)="texto.set($event)"
+        (keydown.escape)="cancelar(); $event.stopPropagation()"
+      ></textarea>
+      <div class="pie">
+        @if (errorTexto(); as mensaje) {
+          <span class="error">{{ mensaje }}</span>
+        } @else {
+          <small class="texto-suave">{{ texto().length }}/{{ maximo }}</small>
+        }
+        <div class="botones">
+          <button type="button" class="btn btn-secundario" (click)="cancelar()">Cancelar</button>
+          <button
+            type="button"
+            class="btn btn-primario"
+            [disabled]="!!errorTexto() || guardando()"
+            (click)="guardar()"
+          >
+            {{ guardando() ? 'Guardando...' : 'Guardar' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <p class="mensaje">{{ c.mensaje }}</p>
+  }
+</div>

@@ -1,0 +1,94 @@
+:host {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.cuerpo {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radio-chico);
+  background: var(--color-fondo);
+}
+
+p {
+  margin: 0;
+}
+
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.5rem;
+}
+
+small {
+  color: var(--color-texto-suave);
+}
+
+.link {
+  margin-left: auto;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-primario);
+  cursor: pointer;
+}
+
+.mensaje {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.edicion {
+  margin-top: 0.4rem;
+}
+
+textarea {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-chico);
+  font: inherit;
+  resize: vertical;
+}
+
+textarea:focus {
+  outline: 2px solid var(--color-primario-suave);
+  border-color: var(--color-primario);
+}
+
+.pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.botones {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.botones .btn {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.9rem;
+}
+
+.error {
+  color: var(--color-error);
+  font-size: 0.85rem;
+}
+
+.oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}

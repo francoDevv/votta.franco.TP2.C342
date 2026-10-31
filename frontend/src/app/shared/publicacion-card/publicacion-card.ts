@@ -1,5 +1,6 @@
 import { Component, computed, inject, input, linkedSignal, output, signal } from '@angular/core';
-import { Publicacion } from '../../models/publicacion';
+import { RouterLink } from '@angular/router';
+import { EstadoMeGusta, Publicacion } from '../../models/publicacion';
 import { AuthService } from '../../services/auth.service';
 import { ModalService } from '../../services/modal.service';
 import { PublicacionesService } from '../../services/publicaciones.service';
@@ -10,9 +11,10 @@ import { TiempoRelativoPipe } from '../pipes/tiempo-relativo.pipe';
 
 @Component({
   selector: 'app-publicacion-card',
-  imports: [Avatar, EstrellasPipe, TiempoRelativoPipe],
+  imports: [Avatar, EstrellasPipe, RouterLink, TiempoRelativoPipe],
   styleUrl: './publicacion-card.css',
   templateUrl: './publicacion-card.html',
+  host: { '[class.destacada]': 'destacada()' },
 })
 export class PublicacionCard {
   private readonly auth = inject(AuthService);
@@ -20,7 +22,9 @@ export class PublicacionCard {
   private readonly publicacionesService = inject(PublicacionesService);
 
   readonly publicacion = input.required<Publicacion>();
+  readonly destacada = input(false);
   readonly eliminada = output<string>();
+  readonly meGustaCambiado = output<EstadoMeGusta>();
 
   protected readonly meGusta = linkedSignal(() => this.publicacion().meGusta);
   protected readonly likesCount = linkedSignal(() => this.publicacion().likesCount);
@@ -50,6 +54,7 @@ export class PublicacionCard {
         this.meGusta.set(estado.meGusta);
         this.likesCount.set(estado.likesCount);
         this.procesando.set(false);
+        this.meGustaCambiado.emit(estado);
       },
       error: (err) => {
         this.meGusta.set(anterior.meGusta);

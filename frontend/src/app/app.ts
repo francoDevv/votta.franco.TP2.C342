@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { SesionService } from './services/sesion.service';
 import { Modal } from './shared/modal/modal';
 
 @Component({
@@ -8,4 +9,8 @@ import { Modal } from './shared/modal/modal';
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
-export class App {}
+export class App {
+  constructor() {
+    inject(SesionService);
+  }
+}

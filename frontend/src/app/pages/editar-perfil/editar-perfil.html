@@ -1,0 +1,70 @@
+<section class="editar">
+  <a routerLink="/mi-perfil" class="volver">‹ Volver a mi perfil</a>
+  <h1>Editar perfil</h1>
+
+  @if (usuario(); as u) {
+    <form class="card" [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+      <div class="foto">
+        @if (vistaPrevia(); as url) {
+          <img [src]="url" alt="Vista previa de tu nueva foto" class="previa" />
+        } @else {
+          <app-avatar [usuario]="u" [tamano]="96" />
+        }
+        <div class="foto-acciones">
+          <label for="imagenPerfil" class="btn btn-secundario">Cambiar foto</label>
+          <input
+            id="imagenPerfil"
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            (change)="elegirImagen($event)"
+          />
+          <small class="texto-suave">JPG, PNG o WEBP hasta 2 MB</small>
+          @if (errorImagen(); as mensaje) {
+            <small class="error">{{ mensaje }}</small>
+          }
+        </div>
+      </div>
+
+      <div class="fila">
+        <div class="campo">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" formControlName="nombre" autocomplete="given-name" />
+          @if (error('nombre'); as mensaje) {
+            <span class="error">{{ mensaje }}</span>
+          }
+        </div>
+        <div class="campo">
+          <label for="apellido">Apellido</label>
+          <input id="apellido" formControlName="apellido" autocomplete="family-name" />
+          @if (error('apellido'); as mensaje) {
+            <span class="error">{{ mensaje }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="descripcion">
+          Descripción breve <span class="texto-suave">(opcional)</span>
+        </label>
+        <textarea id="descripcion" rows="3" formControlName="descripcion"></textarea>
+        <small class="contador texto-suave">{{ form.controls.descripcion.value.length }}/200</small>
+        @if (error('descripcion'); as mensaje) {
+          <span class="error">{{ mensaje }}</span>
+        }
+      </div>
+
+      <div class="fijos">
+        <p><span class="texto-suave">Correo:</span> {{ u.email }}</p>
+        <p><span class="texto-suave">Usuario:</span> &#64;{{ u.username }}</p>
+        <small class="texto-suave">El correo y el nombre de usuario no se pueden cambiar.</small>
+      </div>
+
+      <div class="acciones">
+        <a routerLink="/mi-perfil" class="btn btn-secundario">Cancelar</a>
+        <button type="submit" class="btn btn-primario" [disabled]="guardando()">
+          {{ guardando() ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+      </div>
+    </form>
+  }
+</section>

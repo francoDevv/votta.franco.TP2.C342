@@ -125,3 +125,54 @@ footer {
   color: var(--color-texto-suave);
   font-size: 0.9rem;
 }
+
+.titulo a {
+  color: inherit;
+}
+
+.titulo a:hover {
+  color: var(--color-primario);
+  text-decoration: none;
+}
+
+a.comentarios {
+  font-weight: 400;
+}
+
+a.comentarios:hover {
+  color: var(--color-primario);
+  text-decoration: none;
+}
+
+.ver {
+  margin-left: auto;
+  font-size: 0.9rem;
+}
+
+.comentarios,
+.ver {
+  white-space: nowrap;
+}
+
+@media (max-width: 420px) {
+  .ver {
+    display: none;
+  }
+}
+
+:host(.destacada) .foto {
+  aspect-ratio: 4 / 3;
+  max-height: 480px;
+}
+
+:host(.destacada) .sin-foto {
+  aspect-ratio: 16 / 5;
+}
+
+:host(.destacada) .titulo {
+  font-size: 1.6rem;
+}
+
+:host(.destacada) .mensaje {
+  font-size: 1.05rem;
+}
