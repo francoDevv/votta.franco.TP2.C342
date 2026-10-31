@@ -125,7 +125,7 @@ export class PublicacionesService {
     return this.actualizarContador(id, -1, false);
   }
 
-  private async buscarActiva(id: string): Promise<PublicacionDocument> {
+  async buscarActiva(id: string): Promise<PublicacionDocument> {
     const publicacion = await this.publicacionModel.findOne({ _id: id, activo: true });
     if (!publicacion) {
       throw new NotFoundException('La publicación no existe o fue eliminada');
