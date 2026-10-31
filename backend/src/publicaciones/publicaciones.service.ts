@@ -81,6 +81,23 @@ export class PublicacionesService {
     };
   }
 
+  async obtener(id: string, usuarioId: string) {
+    const publicacion = await this.publicacionModel
+      .findOne({ _id: id, activo: true })
+      .populate('autor', CAMPOS_AUTOR)
+      .select('-__v')
+      .lean();
+    if (!publicacion) {
+      throw new NotFoundException('La publicación no existe o fue eliminada');
+    }
+
+    const meGusta = await this.meGustaModel.exists({
+      usuario: new Types.ObjectId(usuarioId),
+      publicacion: publicacion._id,
+    });
+    return Object.assign(publicacion, { meGusta: meGusta !== null });
+  }
+
   async eliminar(id: string, usuario: UsuarioToken): Promise<void> {
     const publicacion = await this.buscarActiva(id);
 

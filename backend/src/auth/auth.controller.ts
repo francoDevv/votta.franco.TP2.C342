@@ -11,6 +11,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { imagenOpcional } from '../common/pipes/imagen.pipe.js';
 import { AuthService } from './auth.service.js';
 import { Publico } from './decorators/publico.decorator.js';
+import { UsuarioActual } from './decorators/usuario-actual.decorator.js';
+import type { UsuarioToken } from './interfaces/usuario-token.interface.js';
 import { LoginDto } from './dto/login.dto.js';
 import { RegistroDto } from './dto/registro.dto.js';
 
@@ -33,5 +35,17 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
+  }
+
+  @Post('autorizar')
+  @HttpCode(HttpStatus.OK)
+  autorizar(@UsuarioActual() usuario: UsuarioToken) {
+    return this.authService.autorizar(usuario);
+  }
+
+  @Post('refrescar')
+  @HttpCode(HttpStatus.OK)
+  refrescar(@UsuarioActual() usuario: UsuarioToken) {
+    return this.authService.refrescar(usuario);
   }
 }

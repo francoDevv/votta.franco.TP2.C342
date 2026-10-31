@@ -39,6 +39,11 @@ export class PublicacionesController {
     return this.publicacionesService.listar(filtros, usuario.sub);
   }
 
+  @Get(':id')
+  obtener(@Param('id', ParseIdPipe) id: string, @UsuarioActual() usuario: UsuarioToken) {
+    return this.publicacionesService.obtener(id, usuario.sub);
+  }
+
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   eliminar(@Param('id', ParseIdPipe) id: string, @UsuarioActual() usuario: UsuarioToken) {
