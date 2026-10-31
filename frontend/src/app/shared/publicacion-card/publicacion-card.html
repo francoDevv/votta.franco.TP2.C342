@@ -1,0 +1,58 @@
+@let p = publicacion();
+
+<article class="card publicacion">
+  @if (p.imagenUrl) {
+    <img class="foto" [src]="p.imagenUrl" [alt]="'Foto de ' + p.plato" loading="lazy" />
+  } @else {
+    <div class="foto sin-foto" aria-hidden="true">🍽️</div>
+  }
+
+  <div class="contenido">
+    <header class="encabezado">
+      <app-avatar [usuario]="p.autor" [tamano]="38" />
+      <div class="autor">
+        <strong>{{ p.autor.nombre }} {{ p.autor.apellido }}</strong>
+        <small>&#64;{{ p.autor.username }} · {{ p.createdAt | tiempoRelativo }}</small>
+      </div>
+      @if (puedeEliminar()) {
+        <button
+          type="button"
+          class="eliminar"
+          (click)="eliminar()"
+          [disabled]="procesando()"
+          aria-label="Eliminar publicación"
+          title="Eliminar publicación"
+        >
+          🗑
+        </button>
+      }
+    </header>
+
+    <h3>{{ p.titulo }}</h3>
+    <p class="lugar">
+      <span>{{ p.plato }}</span> en <span>{{ p.restaurante }}</span>
+    </p>
+    <p class="estrellas" [attr.aria-label]="p.puntaje + ' de 5 estrellas'">
+      {{ p.puntaje | estrellas }}
+    </p>
+    <p class="mensaje">{{ p.mensaje }}</p>
+
+    <footer>
+      <button
+        type="button"
+        class="me-gusta"
+        [class.activo]="meGusta()"
+        [attr.aria-pressed]="meGusta()"
+        [attr.aria-label]="meGusta() ? 'Quitar me gusta' : 'Dar me gusta'"
+        (click)="alternarMeGusta()"
+      >
+        <span aria-hidden="true">{{ meGusta() ? '♥' : '♡' }}</span>
+        {{ likesCount() }}
+      </button>
+      <span class="comentarios">
+        <span aria-hidden="true">💬</span>
+        {{ p.comentariosCount }} {{ p.comentariosCount === 1 ? 'comentario' : 'comentarios' }}
+      </span>
+    </footer>
+  </div>
+</article>

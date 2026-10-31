@@ -1,5 +1,5 @@
 @if (modal.actual(); as datos) {
-  <div class="fondo" (click)="modal.cerrar()">
+  <div class="fondo" (click)="modal.cerrar(false)">
     <div
       class="modal card"
       [class]="datos.tipo"
@@ -21,9 +21,23 @@
         </ul>
       }
 
-      <button #boton type="button" class="btn btn-primario btn-bloque" (click)="modal.cerrar()">
-        {{ datos.textoBoton ?? 'Entendido' }}
-      </button>
+      <div class="acciones">
+        @if (datos.textoCancelar) {
+          <button type="button" class="btn btn-secundario" (click)="modal.cerrar(false)">
+            {{ datos.textoCancelar }}
+          </button>
+        }
+        <button
+          #boton
+          type="button"
+          class="btn"
+          [class.btn-primario]="!datos.peligro"
+          [class.btn-peligro]="datos.peligro"
+          (click)="modal.cerrar(true)"
+        >
+          {{ datos.textoBoton ?? 'Entendido' }}
+        </button>
+      </div>
     </div>
   </div>
 }

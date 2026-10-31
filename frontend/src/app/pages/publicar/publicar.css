@@ -1,0 +1,133 @@
+.publicar {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+form {
+  margin-top: 1.25rem;
+}
+
+.foto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.foto img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radio-chico);
+}
+
+.foto-vacia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 1.5rem 1rem;
+  border: 2px dashed var(--color-borde);
+  border-radius: var(--radio-chico);
+  background: var(--color-fondo);
+  cursor: pointer;
+  text-align: center;
+}
+
+.foto-vacia:hover {
+  border-color: var(--color-primario);
+}
+
+.foto-vacia .emoji {
+  font-size: 2rem;
+}
+
+.foto input[type='file'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.foto:has(input:focus-visible) .foto-vacia {
+  outline: 2px solid var(--color-primario);
+}
+
+.quitar {
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-error);
+  cursor: pointer;
+}
+
+.fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1rem;
+}
+
+.etiqueta {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.selector-estrellas {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.selector-estrellas button {
+  padding: 0 0.1rem;
+  border: none;
+  background: none;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--color-borde);
+  cursor: pointer;
+  transition: transform 0.1s, color 0.1s;
+}
+
+.selector-estrellas button:hover {
+  transform: scale(1.15);
+}
+
+.selector-estrellas button.llena {
+  color: #f2a23a;
+}
+
+.selector-estrellas span {
+  margin-left: 0.5rem;
+  font-weight: 700;
+}
+
+.error {
+  color: var(--color-error);
+  font-size: 0.85rem;
+}
+
+.contador {
+  align-self: flex-end;
+  font-size: 0.8rem;
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+@media (max-width: 520px) {
+  .fila {
+    grid-template-columns: 1fr;
+  }
+
+  .acciones .btn {
+    flex: 1;
+  }
+}

@@ -60,3 +60,16 @@ ul {
     opacity: 0;
   }
 }
+
+.acciones {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.acciones .btn {
+  flex: 1;
+}
+
+.pregunta .icono {
+  background: var(--color-primario);
+}

@@ -45,9 +45,50 @@
     </div>
 
     <h2 class="subtitulo">Mis últimas reseñas</h2>
-    <div class="card vacio">
-      <p>Todavía no publicaste ningún plato.</p>
-    </div>
+
+    @if (cargando()) {
+      <div class="card vacio">
+        <p>Cargando tus publicaciones...</p>
+      </div>
+    } @else if (error(); as mensaje) {
+      <div class="card vacio">
+        <p>{{ mensaje }}</p>
+        <button type="button" class="btn btn-secundario" (click)="cargarPublicaciones()">
+          Reintentar
+        </button>
+      </div>
+    } @else if (ultimas().length === 0) {
+      <div class="card vacio">
+        <p>Todavía no publicaste ningún plato.</p>
+        <a routerLink="/publicar" class="btn btn-primario">Publicar mi primer plato</a>
+      </div>
+    } @else {
+      <div class="ultimas">
+        @for (item of ultimas(); track item.publicacion._id) {
+          <div class="con-comentarios">
+            <app-publicacion-card
+              [publicacion]="item.publicacion"
+              (eliminada)="cargarPublicaciones()"
+            />
+
+            <div class="comentarios">
+              @if (item.comentarios.total === 0) {
+                <p class="texto-suave sin-comentarios">Todavía no tiene comentarios.</p>
+              } @else {
+                @for (comentario of item.comentarios.items; track comentario._id) {
+                  <app-comentario-item [comentario]="comentario" />
+                }
+                @if (item.comentarios.total > item.comentarios.items.length) {
+                  <p class="texto-suave mas">
+                    y {{ item.comentarios.total - item.comentarios.items.length }} comentarios más
+                  </p>
+                }
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
   } @else {
     <div class="card vacio">
       <p>No hay una sesión iniciada.</p>

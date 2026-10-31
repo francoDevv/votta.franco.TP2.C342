@@ -73,3 +73,37 @@
 .links .salir:hover {
   background: var(--color-fondo);
 }
+
+.links a,
+.links .salir {
+  white-space: nowrap;
+}
+
+.texto-corto {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .navbar-contenido {
+    gap: 0.5rem;
+  }
+
+  .links {
+    gap: 0.1rem;
+  }
+
+  .links a,
+  .links .salir {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .texto-largo {
+    display: none;
+  }
+
+  .texto-corto {
+    display: inline;
+    font-weight: 800;
+  }
+}

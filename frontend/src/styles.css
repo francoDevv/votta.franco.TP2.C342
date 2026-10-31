@@ -133,3 +133,12 @@ a:hover {
   margin: 0 auto;
   padding: 1.5rem 1rem;
 }
+
+.btn-peligro {
+  background: var(--color-error);
+  color: #fff;
+}
+
+.btn-peligro:hover {
+  background: #a31f1f;
+}

@@ -1,0 +1,96 @@
+<section class="publicar">
+  <h1>Publicar un plato</h1>
+  <p class="texto-suave">Contale a la comunidad qué probaste y qué te pareció.</p>
+
+  <form class="card" [formGroup]="form" (ngSubmit)="enviar()" novalidate>
+    <div class="foto">
+      @if (vistaPrevia(); as url) {
+        <img [src]="url" alt="Vista previa de la foto del plato" />
+        <button type="button" class="quitar" (click)="quitarImagen()">Quitar foto</button>
+      } @else {
+        <label for="imagen" class="foto-vacia">
+          <span class="emoji" aria-hidden="true">📷</span>
+          <strong>Agregar foto del plato</strong>
+          <small class="texto-suave">Opcional · JPG, PNG o WEBP hasta 2 MB</small>
+        </label>
+      }
+      <input
+        id="imagen"
+        type="file"
+        accept="image/png,image/jpeg,image/webp"
+        (change)="elegirImagen($event)"
+      />
+      @if (errorImagen(); as mensaje) {
+        <span class="error">{{ mensaje }}</span>
+      }
+    </div>
+
+    <div class="campo">
+      <label for="titulo">Título</label>
+      <input id="titulo" formControlName="titulo" placeholder="Ej: La mejor muzza de Buenos Aires" />
+      @if (error('titulo'); as mensaje) {
+        <span class="error">{{ mensaje }}</span>
+      }
+    </div>
+
+    <div class="fila">
+      <div class="campo">
+        <label for="plato">Plato</label>
+        <input id="plato" formControlName="plato" placeholder="Ej: Muzzarella" />
+        @if (error('plato'); as mensaje) {
+          <span class="error">{{ mensaje }}</span>
+        }
+      </div>
+      <div class="campo">
+        <label for="restaurante">Restaurante</label>
+        <input id="restaurante" formControlName="restaurante" placeholder="Ej: El Cuartito" />
+        @if (error('restaurante'); as mensaje) {
+          <span class="error">{{ mensaje }}</span>
+        }
+      </div>
+    </div>
+
+    <div class="campo">
+      <span class="etiqueta" id="puntaje-label">Puntaje</span>
+      <div class="selector-estrellas" role="radiogroup" aria-labelledby="puntaje-label">
+        @for (valor of estrellas; track valor) {
+          <button
+            type="button"
+            role="radio"
+            [class.llena]="valor <= form.controls.puntaje.value"
+            [attr.aria-checked]="valor === form.controls.puntaje.value"
+            [attr.aria-label]="valor + (valor === 1 ? ' estrella' : ' estrellas')"
+            (click)="elegirPuntaje(valor)"
+          >
+            ★
+          </button>
+        }
+        <span class="texto-suave">{{ etiquetasPuntaje[form.controls.puntaje.value] }}</span>
+      </div>
+      @if (error('puntaje'); as mensaje) {
+        <span class="error">{{ mensaje }}</span>
+      }
+    </div>
+
+    <div class="campo">
+      <label for="mensaje">Tu reseña</label>
+      <textarea
+        id="mensaje"
+        rows="5"
+        formControlName="mensaje"
+        placeholder="¿Cómo estaba? ¿Lo recomendás? ¿Qué tal la porción y el precio?"
+      ></textarea>
+      <small class="contador texto-suave">{{ form.controls.mensaje.value.length }}/1000</small>
+      @if (error('mensaje'); as mensaje) {
+        <span class="error">{{ mensaje }}</span>
+      }
+    </div>
+
+    <div class="acciones">
+      <a routerLink="/publicaciones" class="btn btn-secundario">Cancelar</a>
+      <button type="submit" class="btn btn-primario" [disabled]="enviando()">
+        {{ enviando() ? 'Publicando...' : 'Publicar' }}
+      </button>
+    </div>
+  </form>
+</section>

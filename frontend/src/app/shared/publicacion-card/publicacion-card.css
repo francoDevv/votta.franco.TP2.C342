@@ -1,0 +1,127 @@
+.publicacion {
+  padding: 0;
+  overflow: hidden;
+}
+
+.foto {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: var(--color-primario-suave);
+}
+
+.sin-foto {
+  display: grid;
+  place-items: center;
+  font-size: 3rem;
+  aspect-ratio: 16 / 5;
+}
+
+.contenido {
+  padding: 1rem 1.25rem 1.1rem;
+}
+
+.encabezado {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.autor {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.autor small {
+  color: var(--color-texto-suave);
+}
+
+.eliminar {
+  padding: 0.35rem 0.5rem;
+  border: none;
+  border-radius: var(--radio-chico);
+  background: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.eliminar:hover {
+  background: #fdecec;
+}
+
+h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.lugar {
+  margin: 0.15rem 0 0;
+  color: var(--color-texto-suave);
+}
+
+.lugar span {
+  font-weight: 700;
+  color: var(--color-texto);
+}
+
+.estrellas {
+  margin: 0.25rem 0 0;
+  font-size: 1.15rem;
+  letter-spacing: 0.1em;
+  color: #f2a23a;
+}
+
+.mensaje {
+  margin: 0.6rem 0 0;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-borde);
+}
+
+.me-gusta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 999px;
+  background: var(--color-superficie);
+  font: inherit;
+  font-weight: 700;
+  color: var(--color-texto-suave);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.me-gusta span {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.me-gusta:hover {
+  border-color: var(--color-primario);
+}
+
+.me-gusta.activo {
+  background: var(--color-primario-suave);
+  border-color: var(--color-primario);
+  color: var(--color-primario-hover);
+}
+
+.comentarios {
+  color: var(--color-texto-suave);
+  font-size: 0.9rem;
+}

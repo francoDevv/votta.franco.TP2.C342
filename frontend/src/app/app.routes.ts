@@ -2,10 +2,8 @@ import { Routes } from '@angular/router';
 import { Layout } from './shared/layout/layout';
 
 export const routes: Routes = [
-  // Va primero: si no, la ruta '' del Layout atrapa la raíz y muestra una página vacía
   { path: '', pathMatch: 'full', redirectTo: 'login' },
 
-  // Pantallas de acceso: sin navbar
   {
     path: 'login',
     title: 'Ingresar · Platito',
@@ -17,8 +15,6 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/registro/registro').then((m) => m.Registro),
   },
 
-  // Pantallas internas: van dentro del Layout (navbar + contenido).
-  // En el sprint 3 se le agrega un guard acá para exigir sesión.
   {
     path: '',
     component: Layout,
@@ -28,6 +24,11 @@ export const routes: Routes = [
         title: 'Publicaciones · Platito',
         loadComponent: () =>
           import('./pages/publicaciones/publicaciones').then((m) => m.Publicaciones),
+      },
+      {
+        path: 'publicar',
+        title: 'Publicar · Platito',
+        loadComponent: () => import('./pages/publicar/publicar').then((m) => m.Publicar),
       },
       {
         path: 'mi-perfil',
