@@ -1,6 +1,7 @@
 .pantalla-acceso {
   min-height: 100vh;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   padding: 1.5rem 1rem;
 }
@@ -32,6 +33,7 @@
 
 .con-boton input {
   flex: 1;
+  min-width: 0;
   padding-right: 4.5rem;
 }
 

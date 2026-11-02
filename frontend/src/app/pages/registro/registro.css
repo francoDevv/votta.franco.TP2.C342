@@ -1,6 +1,7 @@
 .pantalla-acceso {
   min-height: 100vh;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   padding: 1.5rem 1rem;
 }
