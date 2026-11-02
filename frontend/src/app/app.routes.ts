@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { adminGuard } from './guards/admin.guard';
 import { invitadoGuard, sesionGuard } from './guards/sesion.guard';
 import { Cargando } from './pages/cargando/cargando';
 import { Layout } from './shared/layout/layout';
@@ -53,6 +54,28 @@ export const routes: Routes = [
         title: 'Editar perfil · Platito',
         loadComponent: () =>
           import('./pages/editar-perfil/editar-perfil').then((m) => m.EditarPerfil),
+      },
+      {
+        path: 'dashboard',
+        canActivate: [adminGuard],
+        loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.Dashboard),
+        children: [
+          { path: '', pathMatch: 'full', redirectTo: 'usuarios' },
+          {
+            path: 'usuarios',
+            title: 'Usuarios · Panel · Platito',
+            loadComponent: () =>
+              import('./pages/dashboard/usuarios/usuarios').then((m) => m.Usuarios),
+          },
+          {
+            path: 'estadisticas',
+            title: 'Estadísticas · Panel · Platito',
+            loadComponent: () =>
+              import('./pages/dashboard/estadisticas/estadisticas').then(
+                (m) => m.Estadisticas,
+              ),
+          },
+        ],
       },
     ],
   },

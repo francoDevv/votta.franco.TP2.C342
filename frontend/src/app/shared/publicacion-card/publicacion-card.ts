@@ -6,12 +6,21 @@ import { ModalService } from '../../services/modal.service';
 import { PublicacionesService } from '../../services/publicaciones.service';
 import { Avatar } from '../avatar/avatar';
 import { mensajesDeError } from '../errores';
+import { ImagenRespaldoDirective } from '../directivas/imagen-respaldo.directive';
 import { EstrellasPipe } from '../pipes/estrellas.pipe';
+import { PluralizarPipe } from '../pipes/pluralizar.pipe';
 import { TiempoRelativoPipe } from '../pipes/tiempo-relativo.pipe';
 
 @Component({
   selector: 'app-publicacion-card',
-  imports: [Avatar, EstrellasPipe, RouterLink, TiempoRelativoPipe],
+  imports: [
+    Avatar,
+    EstrellasPipe,
+    ImagenRespaldoDirective,
+    PluralizarPipe,
+    RouterLink,
+    TiempoRelativoPipe,
+  ],
   styleUrl: './publicacion-card.css',
   templateUrl: './publicacion-card.html',
   host: { '[class.destacada]': 'destacada()' },

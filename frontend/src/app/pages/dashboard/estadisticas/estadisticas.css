@@ -1,0 +1,95 @@
+.filtros {
+  margin-bottom: 1.25rem;
+}
+
+.atajos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.atajos button {
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 999px;
+  background: var(--color-superficie);
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-texto-suave);
+  cursor: pointer;
+}
+
+.atajos button.activo {
+  border-color: var(--color-primario);
+  background: var(--color-primario);
+  color: #fff;
+}
+
+.rango {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.rango .campo {
+  margin-bottom: 0;
+  flex: 1;
+  min-width: 140px;
+}
+
+.error {
+  margin: 0.75rem 0 0;
+  color: var(--color-error);
+  font-size: 0.9rem;
+}
+
+.graficos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  transition: opacity 0.2s;
+}
+
+.graficos.actualizando {
+  opacity: 0.5;
+}
+
+.grafico.ancho {
+  grid-column: 1 / -1;
+}
+
+.grafico header {
+  margin-bottom: 1rem;
+}
+
+.grafico h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.grafico header p {
+  margin: 0.2rem 0 0;
+}
+
+.vacio {
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+  margin: 0;
+  color: var(--color-texto-suave);
+  text-align: center;
+}
+
+.estado {
+  text-align: center;
+  color: var(--color-texto-suave);
+}
+
+@media (max-width: 760px) {
+  .graficos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

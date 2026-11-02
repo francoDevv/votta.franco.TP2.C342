@@ -2,7 +2,13 @@
 
 <article class="card publicacion">
   @if (p.imagenUrl) {
-    <img class="foto" [src]="p.imagenUrl" [alt]="'Foto de ' + p.plato" loading="lazy" />
+    <img
+      class="foto"
+      appImagenRespaldo
+      [src]="p.imagenUrl"
+      [alt]="'Foto de ' + p.plato"
+      loading="lazy"
+    />
   } @else {
     <div class="foto sin-foto" aria-hidden="true">🍽️</div>
   }
@@ -58,12 +64,12 @@
       @if (destacada()) {
         <span class="comentarios">
           <span aria-hidden="true">💬</span>
-          {{ p.comentariosCount }} {{ p.comentariosCount === 1 ? 'comentario' : 'comentarios' }}
+          {{ p.comentariosCount | pluralizar: 'comentario' }}
         </span>
       } @else {
         <a class="comentarios" [routerLink]="['/publicaciones', p._id]">
           <span aria-hidden="true">💬</span>
-          {{ p.comentariosCount }} {{ p.comentariosCount === 1 ? 'comentario' : 'comentarios' }}
+          {{ p.comentariosCount | pluralizar: 'comentario' }}
         </a>
         <a class="ver" [routerLink]="['/publicaciones', p._id]">Ver publicación ›</a>
       }

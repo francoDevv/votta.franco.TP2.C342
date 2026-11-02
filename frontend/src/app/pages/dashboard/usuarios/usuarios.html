@@ -1,0 +1,88 @@
+<div class="barra">
+  <div class="resumen">
+    <span>{{ resumen().total | pluralizar: 'usuario' }}</span>
+    <span>{{ resumen().admins | pluralizar: 'administrador' : 'administradores' }}</span>
+    <span>{{ resumen().deshabilitados | pluralizar: 'deshabilitado' }}</span>
+  </div>
+  <button
+    type="button"
+    class="btn"
+    [class.btn-primario]="!mostrarFormulario()"
+    [class.btn-secundario]="mostrarFormulario()"
+    (click)="mostrarFormulario.set(!mostrarFormulario())"
+  >
+    {{ mostrarFormulario() ? 'Cerrar formulario' : '+ Nuevo usuario' }}
+  </button>
+</div>
+
+<div class="card formulario" [hidden]="!mostrarFormulario()">
+  <h2>Nuevo usuario</h2>
+  <p class="texto-suave">Completá los mismos datos que en el registro y elegí su perfil.</p>
+  <app-formulario-usuario
+    [modoAdmin]="true"
+    [enviando]="creando()"
+    textoBoton="Crear usuario"
+    textoEnviando="Creando usuario..."
+    (enviar)="crear($event)"
+  />
+</div>
+
+<div class="campo buscador">
+  <label for="buscar" class="oculto">Buscar usuarios</label>
+  <input
+    id="buscar"
+    type="search"
+    placeholder="Buscar por nombre, usuario o correo"
+    [ngModel]="busqueda()"
+    (ngModelChange)="busqueda.set($event)"
+  />
+</div>
+
+@if (cargando()) {
+  <div class="card estado"><p>Cargando usuarios...</p></div>
+} @else if (error(); as mensaje) {
+  <div class="card estado">
+    <p>{{ mensaje }}</p>
+    <button type="button" class="btn btn-secundario" (click)="cargar()">Reintentar</button>
+  </div>
+} @else if (filtrados().length === 0) {
+  <div class="card estado"><p>No hay usuarios que coincidan con la búsqueda.</p></div>
+} @else {
+  <ul class="lista">
+    @for (u of filtrados(); track u._id) {
+      <li class="card usuario" [class.inactivo]="!u.activo">
+        <app-avatar [usuario]="u" [tamano]="48" />
+        <div class="datos">
+          <p class="nombre">
+            {{ u.nombre }} {{ u.apellido }}
+            @if (u._id === yo()?._id) {
+              <span class="vos">(vos)</span>
+            }
+          </p>
+          <p class="texto-suave">&#64;{{ u.username }} · {{ u.email }}</p>
+          <p class="etiquetas">
+            <span class="etiqueta" [class.admin]="u.perfil === 'administrador'">
+              {{ u.perfil === 'administrador' ? 'Administrador' : 'Usuario' }}
+            </span>
+            <span class="etiqueta" [class.activo]="u.activo" [class.deshabilitado]="!u.activo">
+              {{ u.activo ? 'Activo' : 'Deshabilitado' }}
+            </span>
+            <small class="texto-suave">desde {{ u.createdAt | date: 'dd/MM/yyyy' }}</small>
+          </p>
+        </div>
+        @if (u._id !== yo()?._id) {
+          <button
+            type="button"
+            class="btn accion"
+            [class.btn-peligro]="u.activo"
+            [class.btn-secundario]="!u.activo"
+            [disabled]="procesandoId() === u._id"
+            (click)="cambiarEstado(u)"
+          >
+            {{ u.activo ? 'Deshabilitar' : 'Habilitar' }}
+          </button>
+        }
+      </li>
+    }
+  </ul>
+}

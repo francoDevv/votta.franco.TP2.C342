@@ -3,11 +3,12 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ModalService } from '../../services/modal.service';
+import { AutofocoDirective } from '../../shared/directivas/autofoco.directive';
 import { mensajesDeError } from '../../shared/errores';
 import { passwordSegura } from '../../shared/validadores';
 
 @Component({
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [AutofocoDirective, RouterLink, ReactiveFormsModule],
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',

@@ -1,0 +1,112 @@
+<form class="card filtros" (ngSubmit)="cargar()">
+  <div class="atajos" role="group" aria-label="Rangos rápidos">
+    @for (dias of atajos; track dias) {
+      <button
+        type="button"
+        [class.activo]="atajoActivo() === dias"
+        [attr.aria-pressed]="atajoActivo() === dias"
+        (click)="usarAtajo(dias)"
+      >
+        Últimos {{ dias }} días
+      </button>
+    }
+  </div>
+
+  <div class="rango">
+    <div class="campo">
+      <label for="desde">Desde</label>
+      <input
+        id="desde"
+        name="desde"
+        type="date"
+        [max]="hasta()"
+        [ngModel]="desde()"
+        (ngModelChange)="cambiarFecha('desde', $event)"
+      />
+    </div>
+    <div class="campo">
+      <label for="hasta">Hasta</label>
+      <input
+        id="hasta"
+        name="hasta"
+        type="date"
+        [min]="desde()"
+        [max]="hoy"
+        [ngModel]="hasta()"
+        (ngModelChange)="cambiarFecha('hasta', $event)"
+      />
+    </div>
+    <button type="submit" class="btn btn-primario" [disabled]="!!errorRango() || cargando()">
+      Aplicar
+    </button>
+  </div>
+  @if (errorRango(); as mensaje) {
+    <p class="error">{{ mensaje }}</p>
+  }
+</form>
+
+@if (error(); as mensaje) {
+  <div class="card estado">
+    <p>{{ mensaje }}</p>
+    <button type="button" class="btn btn-secundario" (click)="cargar()">Reintentar</button>
+  </div>
+} @else if (datos()) {
+  <div class="graficos" [class.actualizando]="cargando()">
+    <section class="card grafico ancho">
+      <header>
+        <h2>Comentarios por día</h2>
+        <p class="texto-suave">
+          <strong>{{ graficoComentariosPorDia().total }}</strong> comentarios en el período
+        </p>
+      </header>
+      <app-grafico
+        tipo="line"
+        nombreSerie="Comentarios"
+        descripcion="Gráfico de líneas con la cantidad de comentarios por día"
+        [etiquetas]="graficoComentariosPorDia().etiquetas"
+        [valores]="graficoComentariosPorDia().valores"
+      />
+    </section>
+
+    <section class="card grafico">
+      <header>
+        <h2>Publicaciones por usuario</h2>
+        <p class="texto-suave">
+          <strong>{{ graficoPublicaciones().total }}</strong> publicaciones en el período
+        </p>
+      </header>
+      @if (graficoPublicaciones().valores.length) {
+        <app-grafico
+          tipo="bar"
+          [horizontal]="true"
+          nombreSerie="Publicaciones"
+          descripcion="Gráfico de barras con la cantidad de publicaciones de cada usuario"
+          [etiquetas]="graficoPublicaciones().etiquetas"
+          [valores]="graficoPublicaciones().valores"
+        />
+      } @else {
+        <p class="vacio">No hubo publicaciones en este período.</p>
+      }
+    </section>
+
+    <section class="card grafico">
+      <header>
+        <h2>Comentarios por publicación</h2>
+        <p class="texto-suave">Las 10 publicaciones más comentadas del período</p>
+      </header>
+      @if (graficoComentariosPorPublicacion().valores.length) {
+        <app-grafico
+          tipo="doughnut"
+          nombreSerie="Comentarios"
+          descripcion="Gráfico de torta con la cantidad de comentarios de cada publicación"
+          [etiquetas]="graficoComentariosPorPublicacion().etiquetas"
+          [valores]="graficoComentariosPorPublicacion().valores"
+        />
+      } @else {
+        <p class="vacio">No hubo comentarios en este período.</p>
+      }
+    </section>
+  </div>
+} @else {
+  <div class="card estado"><p>Cargando estadísticas...</p></div>
+}

@@ -16,4 +16,20 @@ export class UsuariosService {
       .put<Usuario>(`${this.url}/me`, datos)
       .pipe(tap((usuario) => this.auth.actualizarUsuario(usuario)));
   }
+
+  listar(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(this.url);
+  }
+
+  crear(datos: FormData): Observable<Usuario> {
+    return this.http.post<Usuario>(this.url, datos);
+  }
+
+  deshabilitar(id: string): Observable<Usuario> {
+    return this.http.delete<Usuario>(`${this.url}/${id}`);
+  }
+
+  habilitar(id: string): Observable<Usuario> {
+    return this.http.post<Usuario>(`${this.url}/${id}/habilitar`, {});
+  }
 }

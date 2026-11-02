@@ -9,7 +9,12 @@
     <form [formGroup]="form" (ngSubmit)="enviar()" novalidate>
       <div class="campo">
         <label for="identificador">Usuario o correo</label>
-        <input id="identificador" formControlName="identificador" autocomplete="username" />
+        <input
+          id="identificador"
+          appAutofoco
+          formControlName="identificador"
+          autocomplete="username"
+        />
         @if (errorIdentificador(); as mensaje) {
           <span class="error">{{ mensaje }}</span>
         }

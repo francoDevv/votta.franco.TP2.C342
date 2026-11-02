@@ -1,4 +1,5 @@
 import { Component, computed, input } from '@angular/core';
+import { ImagenRespaldoDirective } from '../directivas/imagen-respaldo.directive';
 
 export interface DatosAvatar {
   nombre: string;
@@ -8,9 +9,10 @@ export interface DatosAvatar {
 
 @Component({
   selector: 'app-avatar',
+  imports: [ImagenRespaldoDirective],
   template: `
     @if (usuario().imagenPerfil; as url) {
-      <img [src]="url" [alt]="'Foto de ' + usuario().nombre" />
+      <img [src]="url" [alt]="'Foto de ' + usuario().nombre" appImagenRespaldo="favicon.svg" />
     } @else {
       <span aria-hidden="true">{{ iniciales() }}</span>
     }

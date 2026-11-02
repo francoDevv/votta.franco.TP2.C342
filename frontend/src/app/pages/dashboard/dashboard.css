@@ -1,0 +1,27 @@
+header {
+  margin-bottom: 1.5rem;
+}
+
+.pestanas {
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 0.75rem;
+  border-bottom: 2px solid var(--color-borde);
+}
+
+.pestanas a {
+  margin-bottom: -2px;
+  padding: 0.6rem 1rem;
+  border-bottom: 2px solid transparent;
+  color: var(--color-texto-suave);
+}
+
+.pestanas a:hover {
+  color: var(--color-texto);
+  text-decoration: none;
+}
+
+.pestanas a.activa {
+  border-bottom-color: var(--color-primario);
+  color: var(--color-primario-hover);
+}

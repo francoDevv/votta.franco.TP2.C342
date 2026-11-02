@@ -82,7 +82,8 @@
           </button>
         </nav>
         <p class="texto-suave resumen">
-          Página {{ pagina() }} de {{ totalPaginas() }} · {{ r.total }} publicaciones
+          Página {{ pagina() }} de {{ totalPaginas() }} ·
+          {{ r.total | pluralizar: 'publicación' : 'publicaciones' }}
         </p>
       }
     }

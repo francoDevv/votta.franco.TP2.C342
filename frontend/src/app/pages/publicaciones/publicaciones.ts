@@ -3,12 +3,13 @@ import { RouterLink } from '@angular/router';
 import { OrdenPublicaciones, Pagina, Publicacion } from '../../models/publicacion';
 import { PublicacionesService } from '../../services/publicaciones.service';
 import { mensajesDeError } from '../../shared/errores';
+import { PluralizarPipe } from '../../shared/pipes/pluralizar.pipe';
 import { PublicacionCard } from '../../shared/publicacion-card/publicacion-card';
 
 const POR_PAGINA = 5;
 
 @Component({
-  imports: [RouterLink, PublicacionCard],
+  imports: [PluralizarPipe, RouterLink, PublicacionCard],
   selector: 'app-publicaciones',
   styleUrl: './publicaciones.css',
   templateUrl: './publicaciones.html',

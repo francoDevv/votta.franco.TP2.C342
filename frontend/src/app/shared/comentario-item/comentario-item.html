@@ -20,6 +20,7 @@
       <label class="oculto" [for]="'editar-' + c._id">Editar comentario</label>
       <textarea
         [id]="'editar-' + c._id"
+        appAutofoco
         rows="3"
         [ngModel]="texto()"
         (ngModelChange)="texto.set($event)"

@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { ModalService } from '../../services/modal.service';
 import { PublicacionesService } from '../../services/publicaciones.service';
 import { Avatar } from '../avatar/avatar';
+import { AutofocoDirective } from '../directivas/autofoco.directive';
 import { mensajesDeError } from '../errores';
 import { TiempoRelativoPipe } from '../pipes/tiempo-relativo.pipe';
 
@@ -12,7 +13,7 @@ export const MAX_COMENTARIO = 500;
 
 @Component({
   selector: 'app-comentario-item',
-  imports: [Avatar, FormsModule, TiempoRelativoPipe],
+  imports: [AutofocoDirective, Avatar, FormsModule, TiempoRelativoPipe],
   styleUrl: './comentario-item.css',
   templateUrl: './comentario-item.html',
 })
