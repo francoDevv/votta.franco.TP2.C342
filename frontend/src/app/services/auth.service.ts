@@ -16,6 +16,7 @@ export class AuthService {
   readonly tokenSesion = this.tokenActual.asReadonly();
   readonly usuario = signal<Usuario | null>(this.leerUsuarioGuardado());
   readonly sesionVerificada = signal(false);
+  readonly appIniciada = signal(false);
 
   get token(): string | null {
     return this.tokenActual();

@@ -129,6 +129,11 @@
   }
 
   <button type="submit" class="btn btn-primario btn-bloque" [disabled]="enviando()">
-    {{ enviando() ? textoEnviando() : textoBoton() }}
+    @if (enviando()) {
+      <span class="spinner-boton" aria-hidden="true"></span>
+      {{ textoEnviando() }}
+    } @else {
+      {{ textoBoton() }}
+    }
   </button>
 </form>

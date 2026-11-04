@@ -6,18 +6,21 @@ export const sesionGuard: CanActivateFn = (_route, estado) => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
+  if (!auth.appIniciada() || (auth.token && !auth.sesionVerificada())) {
+    return router.createUrlTree(['/'], { queryParams: { destino: estado.url } });
+  }
   if (!auth.token) {
     return router.createUrlTree(['/login']);
-  }
-  if (!auth.sesionVerificada()) {
-    return router.createUrlTree(['/'], { queryParams: { destino: estado.url } });
   }
   return true;
 };
 
-export const invitadoGuard: CanActivateFn = () => {
+export const invitadoGuard: CanActivateFn = (_route, estado) => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
+  if (!auth.appIniciada()) {
+    return router.createUrlTree(['/'], { queryParams: { destino: estado.url } });
+  }
   return auth.sesionVerificada() ? router.createUrlTree(['/publicaciones']) : true;
 };

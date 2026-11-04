@@ -144,3 +144,18 @@ a:hover {
 .btn-peligro:hover {
   background: #a31f1f;
 }
+
+.spinner-boton {
+  width: 1em;
+  height: 1em;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: girar-boton 0.7s linear infinite;
+}
+
+@keyframes girar-boton {
+  to {
+    transform: rotate(360deg);
+  }
+}

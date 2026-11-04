@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin, timer } from 'rxjs';
+import { catchError, forkJoin, map, of, timer } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 
-const DURACION_MINIMA_MS = 700;
+const DURACION_MINIMA_MS = 900;
+const RUTAS_DE_INVITADO = /^\/(login|registro)(\/|\?|$)/;
 
 @Component({
   selector: 'app-cargando',
@@ -22,18 +23,28 @@ export class Cargando {
   }
 
   private verificarSesion(): void {
-    if (!this.auth.token) {
-      this.ir('/login');
-      return;
-    }
+    const sesionValida = this.auth.token
+      ? this.auth.autorizar().pipe(
+          map(() => true),
+          catchError(() => {
+            this.auth.logout();
+            return of(false);
+          }),
+        )
+      : of(false);
 
-    forkJoin([this.auth.autorizar(), timer(DURACION_MINIMA_MS)]).subscribe({
-      next: () => this.ir(this.destino ?? '/publicaciones'),
-      error: () => {
-        this.auth.logout();
-        this.ir('/login');
-      },
+    forkJoin([sesionValida, timer(DURACION_MINIMA_MS)]).subscribe(([valida]) => {
+      this.auth.appIniciada.set(true);
+      this.ir(valida ? this.destinoConSesion() : this.destinoSinSesion());
     });
+  }
+
+  private destinoConSesion(): string {
+    return this.destino && !RUTAS_DE_INVITADO.test(this.destino) ? this.destino : '/publicaciones';
+  }
+
+  private destinoSinSesion(): string {
+    return this.destino && RUTAS_DE_INVITADO.test(this.destino) ? this.destino : '/login';
   }
 
   private ir(url: string): void {
