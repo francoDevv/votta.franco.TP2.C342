@@ -4,7 +4,7 @@ import { mensajesDeError } from '../shared/errores';
 import { AuthService } from './auth.service';
 import { ModalService } from './modal.service';
 
-const AVISO_ANTES_DE_VENCER_MS = 5 * 60 * 1000;
+const FRACCION_PARA_AVISAR = 2 / 3;
 
 @Injectable({ providedIn: 'root' })
 export class SesionService {
@@ -23,37 +23,41 @@ export class SesionService {
     clearTimeout(this.temporizadorAviso);
     clearTimeout(this.temporizadorVencimiento);
 
-    const vence = this.auth.vencimiento(token);
-    if (!vence) return;
+    const tiempos = this.auth.tiemposToken(token);
+    if (!tiempos) return;
 
-    const restante = vence - Date.now();
-    if (restante <= 0) return;
+    const ahora = Date.now();
+    if (tiempos.vence <= ahora) return;
 
+    const momentoAviso = tiempos.emitido + (tiempos.vence - tiempos.emitido) * FRACCION_PARA_AVISAR;
     this.temporizadorAviso = setTimeout(
-      () => this.avisar(vence),
-      Math.max(0, restante - AVISO_ANTES_DE_VENCER_MS),
+      () => this.avisar(tiempos.vence),
+      Math.max(0, momentoAviso - ahora),
     );
-    this.temporizadorVencimiento = setTimeout(() => this.vencer(), restante);
+    this.temporizadorVencimiento = setTimeout(() => this.vencer(), tiempos.vence - ahora);
   }
 
   private async avisar(vence: number): Promise<void> {
-    const minutos = Math.max(1, Math.round((vence - Date.now()) / 60000));
+    const restante = this.duracionLegible(vence - Date.now());
     const extender = await this.modal.mostrar({
       tipo: 'pregunta',
       titulo: 'Tu sesión está por vencer',
-      mensajes: [`Te quedan ${minutos} minutos de sesión. ¿Querés extenderla?`],
+      mensajes: [`Te quedan ${restante} de sesión. ¿Querés extenderla?`],
       textoBoton: 'Extender sesión',
       textoCancelar: 'Ahora no',
     });
     if (!extender || !this.auth.token) return;
 
     this.auth.refrescar().subscribe({
-      next: () =>
+      next: () => {
+        const tiempos = this.auth.tiemposToken();
+        const duracion = tiempos ? this.duracionLegible(tiempos.vence - tiempos.emitido) : '';
         this.modal.mostrar({
           tipo: 'exito',
           titulo: 'Sesión extendida',
-          mensajes: ['Tenés 15 minutos más de sesión.'],
-        }),
+          mensajes: [`Tenés ${duracion} más de sesión.`],
+        });
+      },
       error: (err) =>
         this.modal.mostrar({
           tipo: 'error',
@@ -70,7 +74,14 @@ export class SesionService {
     this.modal.mostrar({
       tipo: 'info',
       titulo: 'Tu sesión venció',
-      mensajes: ['Pasaron 15 minutos desde que iniciaste sesión. Ingresá de nuevo para continuar.'],
+      mensajes: ['Se terminó el tiempo de tu sesión. Ingresá de nuevo para continuar.'],
     });
+  }
+
+  private duracionLegible(ms: number): string {
+    const segundos = Math.max(1, Math.round(ms / 1000));
+    if (segundos < 120) return `${segundos} ${segundos === 1 ? 'segundo' : 'segundos'}`;
+    const minutos = Math.round(segundos / 60);
+    return `${minutos} ${minutos === 1 ? 'minuto' : 'minutos'}`;
   }
 }

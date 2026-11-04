@@ -61,12 +61,12 @@ export class AuthService {
     this.usuario.set(usuario);
   }
 
-  vencimiento(token: string | null = this.token): number | null {
+  tiemposToken(token: string | null = this.token): { emitido: number; vence: number } | null {
     if (!token) return null;
     try {
       const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-      const { exp } = JSON.parse(atob(base64)) as { exp?: number };
-      return exp ? exp * 1000 : null;
+      const { iat, exp } = JSON.parse(atob(base64)) as { iat?: number; exp?: number };
+      return iat && exp ? { emitido: iat * 1000, vence: exp * 1000 } : null;
     } catch {
       return null;
     }

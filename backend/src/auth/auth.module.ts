@@ -9,6 +9,8 @@ import { RolesGuard } from './guards/roles.guard.js';
 import { UsuariosModule } from '../usuarios/usuarios.module.js';
 import { CloudinaryModule } from '../cloudinary/cloudinary.module.js';
 
+const DURACION_POR_DEFECTO = 15 * 60;
+
 @Module({
   imports: [
     UsuariosModule,
@@ -17,7 +19,9 @@ import { CloudinaryModule } from '../cloudinary/cloudinary.module.js';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         secret: config.getOrThrow<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '15m' },
+        signOptions: {
+          expiresIn: Number(config.get<string>('JWT_DURACION_SEGUNDOS')) || DURACION_POR_DEFECTO,
+        },
       }),
     }),
   ],
